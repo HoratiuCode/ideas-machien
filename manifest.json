@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "👾 EyeStar",
+  "version": "1.0.0",
+  "description": "A glass-styled idea validator and idea spark for X and GitHub trends.",
+  "action": {
+    "default_title": "👾 EyeStar"
+  },
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs",
+    "windows"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "https://*.github.com/*",
+    "https://github.com/*",
+    "https://*.x.com/*",
+    "https://x.com/*",
+    "https://twitter.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.github.com/*",
+        "https://github.com/*",
+        "https://*.x.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

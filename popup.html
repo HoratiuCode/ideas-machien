@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>👾 EyeStar</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="assets/logo.svg" alt="" aria-hidden="true" />
+          </div>
+          <div class="brand-copy">
+            <p class="eyebrow">Idea validator + idea spark</p>
+            <h1>👾 EyeStar</h1>
+            <p class="subtitle">
+              Read the current X or GitHub page, validate an idea, or generate a fresh one from the signal.
+            </p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button id="sizeButton" class="icon-button" title="Toggle size" aria-label="Toggle popup size">
+            <span>⤢</span>
+          </button>
+          <button id="refreshButton" class="icon-button" title="Refresh page" aria-label="Refresh page">
+            <span>⚙</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="panel actions-panel">
+        <div class="button-grid">
+          <button id="validateButton" class="primary-button">Validate idea</button>
+          <button id="sparkButton" class="secondary-button">Spark from page</button>
+        </div>
+
+        <div class="input-group">
+          <label class="field-label" for="ideaInput">Your idea</label>
+          <textarea
+            id="ideaInput"
+            rows="4"
+            placeholder="Paste an idea here. If you leave this empty, EyeStar will generate one from the current page."
+          ></textarea>
+        </div>
+
+        <div class="auto-row">
+          <label class="toggle">
+            <input id="autoRefreshToggle" type="checkbox" />
+            <span>Auto-refresh every</span>
+          </label>
+          <select id="refreshInterval" aria-label="Auto-refresh interval">
+            <option value="10">10s</option>
+            <option value="30">30s</option>
+            <option value="60">60s</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="panel status-panel" aria-live="polite">
+        <div class="status-head">
+          <div>
+            <p class="eyebrow">Current scan</p>
+            <h2 id="statusText">Ready.</h2>
+          </div>
+          <div class="score-pill" id="scorePill">--</div>
+        </div>
+        <p class="status-copy" id="statusCopy">
+          Open an X or GitHub tab, then validate your idea or generate one from the page.
+        </p>
+        <div class="status-meta">
+          <div class="meta-block">
+            <p class="meta-label">Detected site</p>
+            <p class="meta-value" id="siteKind">Waiting</p>
+          </div>
+          <div class="meta-block">
+            <p class="meta-label">Signal score</p>
+            <p class="meta-value" id="signalScore">--</p>
+          </div>
+        </div>
+        <div class="chip-row" id="signalChips"></div>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="history-head">
+          <div>
+            <p class="eyebrow">Recent scans</p>
+            <h2>Recent scans</h2>
+          </div>
+          <button id="clearHistoryButton" class="text-button" type="button">Clear</button>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+
+      <footer class="footer-note">
+        EyeStar reads the active page only. It does not call an external trend API.
+      </footer>
+    </main>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
