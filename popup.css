@@ -321,6 +321,18 @@ body[data-popup-size="large"] .button-grid {
   transform: translateY(0);
 }
 
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+  transform: none;
+  filter: saturate(0.75);
+}
+
+.primary-button:disabled:hover {
+  transform: none;
+}
+
 .input-group {
   display: flex;
   flex-direction: column;

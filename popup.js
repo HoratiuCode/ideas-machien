@@ -232,6 +232,14 @@ function applyPopupSize() {
   }
 }
 
+function syncValidationButtonState() {
+  const hasIdea = Boolean(clean(ui.ideaInput.value));
+  ui.validateButton.disabled = !hasIdea;
+  ui.validateButton.title = hasIdea
+    ? "Validate the idea in the textbox"
+    : "Add an idea first to validate it";
+}
+
 function normalizePageSiteKind(page) {
   const urlKind = detectSiteKindFromUrl(page?.url || "");
   if (urlKind !== "general") {
@@ -736,10 +744,18 @@ async function runAnalysis(mode) {
   }
 
   const input = clean(ui.ideaInput.value);
+  if (mode === "validate" && !input) {
+    ui.statusText.textContent = "Add an idea first.";
+    ui.statusCopy.textContent = "Use Spark from page if you want a generated idea, or type your own idea before validating.";
+    ui.scorePill.textContent = "--";
+    return;
+  }
+
   const result = analyzeIdea(state.page, mode === "spark" ? "" : input);
 
   if (result.type === "spark") {
     ui.ideaInput.value = result.idea;
+    syncValidationButtonState();
   }
 
   ui.statusText.textContent = result.verdict;
@@ -753,6 +769,8 @@ async function runAnalysis(mode) {
 }
 
 function wireEvents() {
+  ui.ideaInput.addEventListener("input", syncValidationButtonState);
+
   ui.refreshButton.addEventListener("click", async () => {
     ui.refreshButton.disabled = true;
     try {
@@ -763,6 +781,10 @@ function wireEvents() {
   });
 
   ui.validateButton.addEventListener("click", async () => {
+    if (ui.validateButton.disabled) {
+      return;
+    }
+
     ui.validateButton.disabled = true;
     ui.validateButton.textContent = "Checking...";
     try {
@@ -822,6 +844,7 @@ function wireEvents() {
       const item = state.history.find((entry) => entry.id === id);
       if (item) {
         ui.ideaInput.value = item.idea;
+        syncValidationButtonState();
         await runAnalysis("validate");
       }
     }
@@ -836,6 +859,7 @@ async function init() {
   wireEvents();
   await loadStorage();
   applyPopupSize();
+  syncValidationButtonState();
   await refreshPage({ quiet: true });
 }
 
